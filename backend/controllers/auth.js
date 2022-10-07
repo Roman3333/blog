@@ -23,19 +23,19 @@ export const register = async (req, res) => {
       password: hash,
     });
 
-    // const token = jwt.sign(
-    //   {
-    //     id: newUser._id,
-    //   },
-    //   'secret123',
-    //   { expiresIn: '30d' },
-    // );
+    const token = jwt.sign(
+      {
+        id: newUser._id,
+      },
+      'secret123',
+      { expiresIn: '30d' },
+    );
 
     await newUser.save();
-
+    console.log(newUser);
     res.json({
       newUser,
-      // token,
+      token,
       message: 'Регистрация прошла успешно.',
     });
   } catch (error) {
@@ -48,7 +48,8 @@ export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
-    console.log(user._doc);
+    console.log(user);
+
     if (!user) {
       return res.json({
         message: 'Такого юзера не существует.',
@@ -92,17 +93,17 @@ export const getMe = async (req, res) => {
       });
     }
 
-    const token = jwt.sign(
-      {
-        id: user._id,
-      },
-      'secret123',
-      { expiresIn: '30d' },
-    );
+    // const token = jwt.sign(
+    //   {
+    //     id: user._id,
+    //   },
+    //   'secret123',
+    //   { expiresIn: '30d' },
+    // );
 
     res.json({
       user,
-      token,
+      // token,
     });
   } catch (error) {
     res.json({ message: 'Нет доступа.' });
